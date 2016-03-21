@@ -21,6 +21,7 @@ class MainModel() : Model<MainPresenter>() {
 
     val countdown = clicks
             .flatMap {
+                countdownFinished = false
                 Observable.from(20 downTo 0)
                         .zipWith(Observable.interval(1, TimeUnit.SECONDS)) {
                             count, i ->

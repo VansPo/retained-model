@@ -15,12 +15,12 @@ class MainModel() : Model<MainPresenter>() {
     private var countdownFinished = false
     //
     private val modelLifecycleSubscriptions = CompositeSubscription()
-    private val viewlLifecycleSubscriptions = CompositeSubscription()
+    private val viewLifecycleSubscriptions = CompositeSubscription()
 
     private val clicks = PublishSubject<Any>()
 
     val countdown = clicks
-            .flatMap {
+            .switchMap {
                 countdownFinished = false
                 Observable.from(20 downTo 0)
                         .zipWith(Observable.interval(1, TimeUnit.SECONDS)) {
@@ -48,12 +48,12 @@ class MainModel() : Model<MainPresenter>() {
 
     override fun attachPresenter(presenter: MainPresenter) {
         Log.i("MODEL", "attach presenter")
-        viewlLifecycleSubscriptions += presenter.clicks.subscribe(clicks)
+        viewLifecycleSubscriptions += presenter.clicks.subscribe(clicks)
     }
 
     override fun detachPresenter() {
         Log.i("MODEL", "detach presenter")
-        viewlLifecycleSubscriptions.clear()
+        viewLifecycleSubscriptions.clear()
     }
 
     override fun onDestroy() {

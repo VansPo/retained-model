@@ -13,6 +13,9 @@ class MainActivity : RxAppCompatActivity() {
     lateinit var model: MainModel
     lateinit var presenter: MainPresenter
 
+    val text by lazy { context.findViewById(R.id.textview) as TextView }
+    val fab by lazy { context.findViewById(R.id.fab) as FloatingActionButton }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,5 +38,13 @@ class MainActivity : RxAppCompatActivity() {
     override fun onStop() {
         model.detachPresenter()
         super.onStop()
+    }
+
+    fun init() {
+        fab.setOnClickListener { presenter.clickAction() }
+    }
+
+    fun updateCounter(count: Int) {
+        text.text = "Countdown: $count"
     }
 }

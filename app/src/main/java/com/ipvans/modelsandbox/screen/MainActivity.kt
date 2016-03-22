@@ -20,7 +20,7 @@ class MainActivity : RxAppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
-        model = getModel("main_activity") { MainModel() }
+        model = getModel("main_activity", selfDestroyable = false) { MainModel() }
         presenter = MainPresenter(this, model)
 
     }

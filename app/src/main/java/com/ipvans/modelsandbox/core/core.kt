@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 
 @Suppress("UNCHECKED_CAST")
-inline fun <P, M : Model<P>> Context.getModel(key: String, f: () -> M): M {
+inline fun <P, M : Model<P>> Context.getModel(key: String, selfDestroyable: Boolean = true, f: () -> M): M {
     val app = when (applicationContext) {
         is ModelContainer -> applicationContext as ModelContainer
         else -> throw IllegalArgumentException("Your Application must implement ModelContainer interface!")
@@ -27,12 +27,12 @@ inline fun <P, M : Model<P>> Context.getModel(key: String, f: () -> M): M {
     }
 
     if (this is AppCompatActivity)
-        supportFragmentManager.getOrCreateRetainedFragment(key, model)
+        supportFragmentManager.getOrCreateRetainedFragment(key, selfDestroyable, model)
 
     return model
 }
 
-fun <P, M : Model<P>> FragmentManager.getOrCreateRetainedFragment(tag: String, model: M): RetainFragment<P, M> {
+fun <P, M : Model<P>> FragmentManager.getOrCreateRetainedFragment(tag: String, selfDestroyable: Boolean, model: M): RetainFragment<P, M> {
     @Suppress("UNCHECKED_CAST")
     val fragment = findFragmentByTag(tag) as RetainFragment<P, M>?
     return when {
@@ -40,6 +40,7 @@ fun <P, M : Model<P>> FragmentManager.getOrCreateRetainedFragment(tag: String, m
             // create fragment with new instance
             val newFragment = RetainFragment<P, M>()
             newFragment.apply {
+                newFragment.selfDestroyable = selfDestroyable
                 newFragment.model = model
                 beginTransaction()
                         .add(newFragment, tag)
@@ -50,6 +51,7 @@ fun <P, M : Model<P>> FragmentManager.getOrCreateRetainedFragment(tag: String, m
             // container-fragment found, but value is null => recreate fragment and create new instance
             val newFragment = RetainFragment<P, M>()
             newFragment.apply {
+                newFragment.selfDestroyable = selfDestroyable
                 newFragment.model = model
                 beginTransaction()
                         .remove(fragment)
@@ -63,6 +65,7 @@ fun <P, M : Model<P>> FragmentManager.getOrCreateRetainedFragment(tag: String, m
 
 open class RetainFragment<P, M : Model<P>>() : Fragment() {
 
+    var selfDestroyable = true
     var model: M? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +76,8 @@ open class RetainFragment<P, M : Model<P>>() : Fragment() {
 
     override fun onDestroy() {
         model?.onDestroy()
+        if (selfDestroyable)
+            model?.destroy()
         super.onDestroy()
     }
 }

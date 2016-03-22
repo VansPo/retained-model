@@ -23,7 +23,7 @@ class MainModel() : Model<MainPresenter>() {
             .switchMap {
                 countdownFinished = false
                 Observable.from(20 downTo 0)
-                        .zipWith(Observable.interval(1, TimeUnit.SECONDS)) {
+                        .zipWith(Observable.interval(0, 1, TimeUnit.SECONDS)) {
                             count, i ->
                             count
                         }

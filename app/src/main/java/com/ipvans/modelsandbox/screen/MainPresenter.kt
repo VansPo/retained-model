@@ -1,8 +1,5 @@
 package com.ipvans.modelsandbox.screen
 
-import android.support.design.widget.FloatingActionButton
-import android.widget.TextView
-import com.ipvans.modelsandbox.R
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.android.schedulers.AndroidSchedulers
 import rx.lang.kotlin.PublishSubject
@@ -22,8 +19,6 @@ class MainPresenter(context: MainActivity, val model: MainModel) {
                 .subscribe { context.updateCounter(it) }
     }
 
-    fun clickAction() {
-        clicksSubject.onNext(0)
-    }
+    fun clickAction() = clicksSubject.onNext(0)
 
 }

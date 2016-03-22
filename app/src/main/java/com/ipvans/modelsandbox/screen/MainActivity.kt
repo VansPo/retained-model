@@ -1,8 +1,10 @@
 package com.ipvans.modelsandbox.screen
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.widget.TextView
 import com.ipvans.modelsandbox.App
 import com.ipvans.modelsandbox.R
 import com.ipvans.modelsandbox.core.getModel
@@ -13,8 +15,8 @@ class MainActivity : RxAppCompatActivity() {
     lateinit var model: MainModel
     lateinit var presenter: MainPresenter
 
-    val text by lazy { context.findViewById(R.id.textview) as TextView }
-    val fab by lazy { context.findViewById(R.id.fab) as FloatingActionButton }
+    val text by lazy { findViewById(R.id.textview) as TextView }
+    val fab by lazy { findViewById(R.id.fab) as FloatingActionButton }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

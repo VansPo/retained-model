@@ -1,8 +1,7 @@
 package com.ipvans.rm.example.screen
 
 import android.util.Log
-import com.ipvans.example.core.Model
-import com.ipvans.example.screen.MainPresenter
+import com.ipvans.rm.retainedmodel.Model
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
 import rx.lang.kotlin.plusAssign

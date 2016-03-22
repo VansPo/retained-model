@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.TextView
 import com.ipvans.rm.example.R
 import com.ipvans.rm.example.App
+import com.ipvans.rm.retainedmodel.getModel
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 
 class MainActivity : RxAppCompatActivity() {
